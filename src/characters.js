@@ -1,11 +1,11 @@
 import luffy_image from "./assets/Luffy Gears 5 Wallpaper.jpg";
 import zoro_image from "./assets/Zoro.png"
-import robin_image from "./assets/Nico"
+import robin_image from "./assets/Nico Robin.jpg"
 
 export const characters = [
     {
         name: "Monkey D. Luffy",
-        alias: ["Straw Hat Luffy", "Monkey D Luffy"],
+        alias: ["luffy", "monkey d luffy", "strawhat luffy"],
         image: luffy_image,
         hints: [
             "I am the captain of the Straw Hat Pirates.",
