@@ -4,7 +4,7 @@ import { Search } from "lucide-react";
 import { div, form } from "motion/react-client";
 
 export const GuessInput = ({ onGuess }) => {
-  const [guess, setOnGuess] = useState("");
+  const [guess, setGuess] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = (event) => {
@@ -15,7 +15,7 @@ export const GuessInput = ({ onGuess }) => {
     }
     setError("");
     onGuess(guess.trim().toLowerCase());
-    setOnGuess("");
+    setGuess("");
   };
 
   return (
@@ -31,7 +31,7 @@ export const GuessInput = ({ onGuess }) => {
           type="text"
           placeholder="Guess the character"
           value={guess}
-          onChange={(event) => setOnGuess(event.target.value)}
+          onChange={(event) => setGuess(event.target.value)}
           className="flex-1 bg-transparent outline-none px-2 py-2 text-gray-500 placeholder:gray-500/70"
         />
         <button
@@ -54,3 +54,5 @@ export const GuessInput = ({ onGuess }) => {
     </motion.form>
   );
 };
+
+export default GuessInput;
