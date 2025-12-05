@@ -1,18 +1,27 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-export const CharacterCard = ({ character, revealed, attempts = 0 }) => {
-  const hintsToshow = character.hints.slice(0, attempts);
+export const CharacterCard = ({
+  character,
+  revealed,
+  attempts = 0,
+  disabled = false,
+}) => {
+  const hintsToshow = (character.hints || [])
+    .filter(Boolean)
+    .slice(0, attempts);
 
   return (
     <>
-      <div className="bg-gray-800 text-gray-900 rounded-3xl shadow-sm border border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700 p-6 transition-colors">
+      <div
+        className={`relative bg-gray-800 text-gray-900 rounded-3xl shadow-sm border border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700 p-6 transition-colors`}
+      >
         <motion.div
           initial={false}
           animate={
             revealed
               ? { filter: "blur(0px) grayscale(0%)", scale: 1 }
-              : { filter: "blur(8px) grayscale(100%)", scale: 0.98 }
+              : { filter: "blur(4px) grayscale(100%)", scale: 0.98 }
           }
           transition={{ duration: 0.6 }}
           className="overflow-hidden rounded-2xl aspect-3/4 max-w-64 mx-auto"
@@ -54,6 +63,14 @@ export const CharacterCard = ({ character, revealed, attempts = 0 }) => {
             </p>
           )}
         </div>
+
+        {disabled && (
+          <div className="absolute inset-0 bg-black/30 rounded-3xl flex items-center justify-center pointer-events-none">
+            <p className="text-white text-center font-semibold">
+              Crew Complete
+            </p>
+          </div>
+        )}
       </div>
     </>
   );

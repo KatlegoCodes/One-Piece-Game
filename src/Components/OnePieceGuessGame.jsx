@@ -30,9 +30,21 @@ export const OnePieceGuessGame = () => {
     support2: null,
   });
 
+  const [score, setScore] = useState(0);
+  const [rolesFilled, setRolesFiled] = useState(false);
+
   useEffect(() => {
     resetGame();
   }, []);
+
+  useEffect(() => {
+    const filled = Object.values(crew).every(Boolean);
+    setRolesFiled(filled);
+
+    if (filled) {
+      setMessage(`🎉 Crew complete! Final score: ${score}`);
+    }
+  }, [crew, score]);
 
   const drawNextCharacter = () => {
     setDeck((prev) => {
@@ -55,7 +67,7 @@ export const OnePieceGuessGame = () => {
   };
 
   const handleGuess = (guess) => {
-    if (!currentCharacter || !guess) return;
+    if (!currentCharacter || !guess || rolesFilled) return;
 
     const userGuess = guess.trim().toLowerCase();
     const isCorrect = currentCharacter.alias.some(
@@ -64,21 +76,54 @@ export const OnePieceGuessGame = () => {
 
     if (isCorrect) {
       setRevealed(true);
+
+      const points = Math.max(0, 3 - attempts);
+      setScore((prev) => prev + points);
       setMessage("✅ Correct! Choose a crew role to assign.");
-    } else {
-      setAttempts((prev) => prev + 1);
-      setMessage("❌ Try again!");
+      return;
     }
+
+    setAttempts((prev) => {
+      const newAttempts = prev + 1;
+
+      if (newAttempts >= 4) {
+        setRevealed(true);
+        setMessage("❌ Out of hints! Character revealed.");
+      } else {
+        setMessage("❌ Try again!");
+      }
+
+      return newAttempts;
+    });
   };
 
   const assignToCrew = (role) => {
-    setCrew((prev) => ({ ...prev, [role]: currentCharacter }));
+    if (!currentCharacter) return;
+
+    if (crew[role]) {
+      setMessage(`${role} is already filled.`);
+      return;
+    }
+
+    setCrew((prev) => {
+      const newCrew = { ...prev, [role]: currentCharacter };
+      return newCrew;
+    });
     setMessage(`${currentCharacter.name} joined as your ${role}!`);
 
     setTimeout(() => {
-      drawNextCharacter();
+      const willBeFilled = Object.values({
+        ...crew,
+        [role]: currentCharacter,
+      }).every(Boolean);
+
+      if (!willBeFilled) {
+        drawNextCharacter();
+      }
     }, 2000);
   };
+
+  const isCrewFull = Object.values(crew).every((member) => member !== null);
 
   const resetGame = () => {
     const newDeck = shuffleArray(characters);
@@ -95,6 +140,8 @@ export const OnePieceGuessGame = () => {
     setRevealed(false);
     setAttempts(0);
     setMessage("");
+    setScore(0);
+    setRolesFiled(false);
   };
 
   return (
@@ -124,7 +171,7 @@ export const OnePieceGuessGame = () => {
             attempts={attempts}
           />
 
-          <GuessInput onGuess={handleGuess} />
+          <GuessInput onGuess={handleGuess} disabled={isCrewFull} />
 
           {message && (
             <motion.p
@@ -139,7 +186,7 @@ export const OnePieceGuessGame = () => {
             </motion.p>
           )}
 
-          {revealed && (
+          {revealed && !rolesFilled && (
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               {Object.keys(crew).map((role) => (
                 <button
