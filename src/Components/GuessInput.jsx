@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
-import { div, form } from "motion/react-client";
 
-export const GuessInput = ({ onGuess }) => {
+export const GuessInput = ({ onGuess, disabled = false }) => {
   const [guess, setGuess] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (disabled) return;
     if (guess.trim() === "") {
       setError("Please Enter a guess");
       return;
@@ -29,14 +29,22 @@ export const GuessInput = ({ onGuess }) => {
         <Search className="text-gray-500 w-5 h-5 ml-2" />
         <input
           type="text"
-          placeholder="Guess the character"
+          placeholder={
+            disabled ? "Crew Complete - no more guesses" : "Guess The Character"
+          }
           value={guess}
           onChange={(event) => setGuess(event.target.value)}
           className="flex-1 bg-transparent outline-none px-2 py-2 text-gray-500 placeholder:gray-500/70"
         />
         <button
           type="submit"
-          className="px-4 py-2 rounded-xl font-medium text-white bg-indigo-600 hover:bg-indigo-600/90 active:scale-95 transition-transform"
+          disabled={disabled}
+          className={`px-4 py-2 rounded-lg font-medium text-white
+            ${
+              disabled
+                ? "bg-gray-500 cursor-not-allowed"
+                : "bg-indigo-600 hover:bg-indigo-700"
+            }`}
         >
           Guess
         </button>
