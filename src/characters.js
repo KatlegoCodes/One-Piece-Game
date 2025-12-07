@@ -2,7 +2,7 @@ import luffy_image from "./assets/Luffy Gears 5 Wallpaper.jpg";
 import zoro_image from "./assets/Zoro.png";
 import robin_image from "./assets/Nico Robin.jpg";
 import sanji_image from "./assets/Vinsmoke Sanji.jpg";
-import loki_image from "./assets/loki.jpg";
+import loki_image from "./assets/Loki.jpg";
 import ace_image from "./assets/ace.jpg";
 import doflamingo_image from "./assets/Doflamingo 🦩.jpg";
 import crocodile_image from "./assets/crocodile.jpg";
