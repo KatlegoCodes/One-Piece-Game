@@ -146,21 +146,28 @@ export const OnePieceGuessGame = () => {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-6 bg-linear-to-b from-gray-950 to-gray-900 text-white">
-      <div className="flex items-center justify-between w-full max-w-3xl mb-6">
+      {/* HEADING  */}
+      <div className="w-full flex justify-center mb-2">
         <motion.h1
-          initial={{ opacity: 0, y: -8 }}
+          initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl font-bold text-yellow-400 tracking-wide"
+          transition={{ duration: 0.6 }}
+          className="text-5xl font-black tracking-wide text-yellow-400 uppercase text-center"
         >
           Build Your Crew
         </motion.h1>
+      </div>
 
-        <button
-          onClick={resetGame}
-          className="px-4 py-2 rounded-lg bg-red-500 font-semibold hover:bg-red-600"
-        >
-          Reset Game
-        </button>
+      <h2 className="mb-2 text-l text-gray-300 font-semibold">
+        Guess the character and assemble the strongest pirate crew.
+      </h2>
+
+      <div className="text-center max-w-2xl mb-10">
+        <p className="text-gray-300 leading-relaxed text-sm">
+          Guess the One Piece character using hints! Each incorrect guess
+          reveals a new hint. Get it right and recruit them into your crew. Fill
+          all roles to complete your pirate squad!
+        </p>
       </div>
 
       {currentCharacter && (
@@ -206,6 +213,15 @@ export const OnePieceGuessGame = () => {
           )}
         </>
       )}
+
+      <div className="w-full max-w-4xl flex justify-center mt-5">
+        <button
+          onClick={resetGame}
+          className="px-4 py-2 rounded-lg bg-red-500 font-semibold hover:bg-red-600"
+        >
+          Reset Game
+        </button>
+      </div>
 
       <CrewBoard crew={crew} />
     </main>

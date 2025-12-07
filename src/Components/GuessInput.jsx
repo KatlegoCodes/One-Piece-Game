@@ -33,8 +33,10 @@ export const GuessInput = ({ onGuess, disabled = false }) => {
             disabled ? "Crew Complete - no more guesses" : "Guess The Character"
           }
           value={guess}
+          disabled={disabled}
           onChange={(event) => setGuess(event.target.value)}
-          className="flex-1 bg-transparent outline-none px-2 py-2 text-gray-500 placeholder:gray-500/70"
+          className={`flex-1 bg-transparent outline-none px-2 py-2 text-gray-500 placeholder:gray-500/70
+            ${disabled ? "cursor-not-allowed" : "cursor-text"}`}
         />
         <button
           type="submit"
