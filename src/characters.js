@@ -9,7 +9,7 @@ import crocodile_image from "./assets/crocodile.jpg";
 import kaidou_image from "./assets/kaido.jpg";
 import rocks_image from "./assets/rocks.jpg";
 import kizaru_image from "./assets/Kizaru.jpg";
-import whitebeard_image from "./assets/whitebeard.jpg";
+import whitebeard_image from "./assets/Whitebeard.jpg";
 import law_image from "./assets/Trafalgar D Water Law.jpg"
 import kuzan_image from "./assets/kuzan.jpg";
 import brook_image from "./assets/Brook.jpg";
