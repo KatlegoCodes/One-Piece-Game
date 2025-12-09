@@ -38,6 +38,13 @@ export const OnePieceGuessGame = () => {
   }, []);
 
   useEffect(() => {
+    characters.forEach((char) => {
+      const img = new Image();
+      img.src = char.image;
+    });
+  }, []);
+
+  useEffect(() => {
     const filled = Object.values(crew).every(Boolean);
     setRolesFiled(filled);
 
