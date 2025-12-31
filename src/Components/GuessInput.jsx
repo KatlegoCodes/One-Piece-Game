@@ -25,8 +25,7 @@ export const GuessInput = ({ onGuess, disabled = false }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-2xl shadow-sm p-2 transition focus-within:ring-indigo-500  ">
-        <Search className="text-gray-500 w-5 h-5 ml-2" />
+      <div className="flex flex-col sm:flex-row sm:items-center items-center gap-2 bg-white border border-gray-200 rounded-2xl shadow-sm p-2 transition focus-within:ring-indigo-500  ">
         <input
           type="text"
           placeholder={
@@ -41,7 +40,7 @@ export const GuessInput = ({ onGuess, disabled = false }) => {
         <button
           type="submit"
           disabled={disabled}
-          className={`px-4 py-2 rounded-lg font-medium text-white
+          className={`w-full sm:w-auto px-4 py-2 rounded-lg font-medium text-white
             ${
               disabled
                 ? "bg-gray-500 cursor-not-allowed"
