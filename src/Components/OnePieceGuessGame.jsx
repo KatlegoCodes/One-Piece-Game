@@ -4,6 +4,7 @@ import { CharacterCard } from "./CharacterCard";
 import { GuessInput } from "./GuessInput";
 import { characters } from "../characters";
 import { CrewBoard } from "./CrewBoard";
+import { startJourney } from "../ai";
 
 const shuffleArray = (array) => {
   const shuffled = [...array];
@@ -20,6 +21,8 @@ export const OnePieceGuessGame = () => {
   const [revealed, setRevealed] = useState(false);
   const [message, setMessage] = useState("");
   const [attempts, setAttempts] = useState(0);
+  const [journeyResult, setJourneyResult] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [crew, setCrew] = useState({
     captain: null,
@@ -31,7 +34,7 @@ export const OnePieceGuessGame = () => {
   });
 
   const [score, setScore] = useState(0);
-  const [rolesFilled, setRolesFiled] = useState(false);
+  const [rolesFilled, setRolesFilled] = useState(false);
 
   useEffect(() => {
     resetGame();
@@ -46,7 +49,7 @@ export const OnePieceGuessGame = () => {
 
   useEffect(() => {
     const filled = Object.values(crew).every(Boolean);
-    setRolesFiled(filled);
+    setRolesFilled(filled);
 
     if (filled) {
       setMessage(`🎉 Crew complete! Final score: ${score}`);
@@ -148,7 +151,24 @@ export const OnePieceGuessGame = () => {
     setAttempts(0);
     setMessage("");
     setScore(0);
-    setRolesFiled(false);
+    setRolesFilled(false);
+    setJourneyResult(false);
+  };
+
+  const handleBeginJourney = async () => {
+    setIsLoading(true);
+    setJourneyResult("The GrandLine is judging your crew...⏳");
+
+    try {
+      const result = await startJourney(crew);
+      setJourneyResult(result);
+    } catch (error) {
+      setJourneyResult(
+        "The GrandLine connection failed...even the log Pose gave up"
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -229,6 +249,27 @@ export const OnePieceGuessGame = () => {
           Reset Game
         </button>
       </div>
+
+      {isCrewFull && (
+        <button
+          className="mt-6 px-6 py-3 rounded-xl bg-indigo-600 text-white font-semibold disabled:opacity-50"
+          onClick={handleBeginJourney}
+          disabled={isLoading}
+        >
+          {isLoading ? "Consulting the Log Pose..." : "Begin Your Journey"}
+        </button>
+      )}
+
+      {journeyResult && (
+        <div className="mt-6 p-6 rounded-2xl bg-white shadow-md border">
+          <h2 className="text-lg text-gray-800 text-center font-bold mb-2">
+            Journey Result
+          </h2>
+          <p className="whitespace-pre-line text-gray-800 text-center">
+            {journeyResult}
+          </p>
+        </div>
+      )}
 
       <CrewBoard crew={crew} />
     </main>
