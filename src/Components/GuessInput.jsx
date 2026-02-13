@@ -25,27 +25,48 @@ export const GuessInput = ({ onGuess, disabled = false }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      <div className="flex flex-col sm:flex-row sm:items-center items-center gap-2 bg-white border border-gray-200 rounded-2xl shadow-sm p-2 transition focus-within:ring-indigo-500  ">
-        <input
-          type="text"
-          placeholder={
-            disabled ? "Crew Complete - no more guesses" : "Guess The Character"
-          }
-          value={guess}
-          disabled={disabled}
-          onChange={(event) => setGuess(event.target.value)}
-          className={`flex-1 bg-transparent outline-none px-2 py-2 text-gray-500 placeholder:gray-500/70
-            ${disabled ? "cursor-not-allowed" : "cursor-text"}`}
-        />
+      <div className="flex flex-col gap-2">
+        {/* Input container */}
+        <div className="flex flex-col sm:flex-row sm:items-center items-center gap-2 bg-white border border-gray-200 rounded-2xl shadow-sm p-2 transition focus-within:ring-indigo-500">
+          <input
+            type="text"
+            placeholder={
+              disabled
+                ? "Crew Complete - no more guesses"
+                : "Guess The Character"
+            }
+            value={guess}
+            disabled={disabled}
+            onChange={(event) => setGuess(event.target.value)}
+            className={`flex-1 bg-transparent outline-none px-2 py-2 text-gray-500 placeholder:gray-500/70
+        ${disabled ? "cursor-not-allowed" : "cursor-text"}`}
+          />
+
+          {/* Button inside for sm screens and up */}
+          <button
+            type="submit"
+            disabled={disabled}
+            className={`hidden sm:block w-full sm:w-auto px-4 py-2 rounded-lg font-medium text-white
+        ${
+          disabled
+            ? "bg-gray-500 cursor-not-allowed"
+            : "bg-indigo-600 hover:bg-indigo-700"
+        }`}
+          >
+            Guess
+          </button>
+        </div>
+
+        {/* Button outside for mobile screens */}
         <button
           type="submit"
           disabled={disabled}
-          className={`w-full sm:w-auto px-4 py-2 rounded-lg font-medium text-white
-            ${
-              disabled
-                ? "bg-gray-500 cursor-not-allowed"
-                : "bg-indigo-600 hover:bg-indigo-700"
-            }`}
+          className={`block sm:hidden w-full px-4 py-2 rounded-lg font-medium text-white
+      ${
+        disabled
+          ? "bg-gray-500 cursor-not-allowed"
+          : "bg-indigo-600 hover:bg-indigo-700"
+      }`}
         >
           Guess
         </button>
