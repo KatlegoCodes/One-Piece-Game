@@ -1,16 +1,130 @@
-# React + Vite
+# ☠️ One Piece Guess Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A One Piece-inspired guessing game where players identify blurred characters, unlock hints, build their pirate crew, and create their own AI-generated adventure through the Grand Line.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project combines anime, gaming, storytelling, and web development into an interactive One Piece experience. Players must guess blurred One Piece characters using visual clues and hints. Correct guesses reward players with new crew members, allowing them to build their dream pirate crew.
 
-## React Compiler
+The app also uses AI-generated storytelling to create personalized journeys across the Grand Line based on the player’s crew, choices, and progression.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Features
 
-## Expanding the ESLint configuration
+* Guess blurred One Piece characters
+* Progressive hint system
+* Crew-building mechanics
+* AI-generated Grand Line adventures
+* Dynamic gameplay experience
+* Responsive design for mobile and desktop
+* Smooth UI animations and transitions
+* Score/progression tracking *(optional)*
+  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React
+* JavaScript
+* HTML5
+* CSS3 / Tailwind CSS
+
+### AI Features
+
+* AI-generated storytelling
+* Dynamic adventure generation
+
+### Other Tools
+
+* Vite
+* Git & GitHub
+
+## 📸 Screenshots
+
+<img width="480" height="536" alt="Screenshot 2026-05-22 at 13-18-18 one-piece" src="https://github.com/user-attachments/assets/0683213c-1fdf-498d-9d44-c12207dd4de3" />
+<img width="817" height="584" alt="Screenshot 2026-05-22 at 13-16-50 one-piece" src="https://github.com/user-attachments/assets/12e69a1f-04ea-4fc7-9341-e08baf017f4d" />
+
+## ⚙️ Installation
+
+Clone the repository:
+
+```bash
+cd one-piece-guess-game
+https://github.com/KatlegoCodes/One-Piece-Game/
+``` 
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+## 🎮 How It Works
+
+1. A blurred One Piece character appears on screen.
+2. Players attempt to guess the character.
+3. Hints are gradually revealed.
+4. Correct answers unlock crew members.
+5. Players build their own pirate crew.
+6. AI generates a unique Grand Line journey based on the player’s progress and crew composition.
+
+## 📂 Project Structure
+
+```bash
+src/
+├── components/
+├── pages/
+├── assets/
+├── data/
+├── styles/
+├── App.jsx
+└── main.jsx
+```
+
+## 🎯 Goals For This Project
+
+* Improve React and frontend development skills
+* Explore game mechanics in web development
+* Experiment with AI-generated storytelling
+* Create an engaging anime-inspired experience
+* Build a polished portfolio project
+
+## 🔮 Future Improvements
+
+* Multiplayer mode
+* Leaderboards
+* More advanced AI story generation
+* Difficulty levels
+* Voice effects and soundtrack integration
+* Save/load crew progress
+* Online accounts and authentication
+
+## 🌍 Live Demo
+
+```md
+https://one-piece-game-jet.vercel.app/
+```
+
+## 🤝 Contributing
+
+Contributions, suggestions, and feedback are welcome.
+
+1. Fork the project
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a pull request
+
+## 📄 License
+
+This project is for educational and portfolio purposes.
+
+## 👨‍💻 Author
+
+Created by Katlego Mashigwana.
