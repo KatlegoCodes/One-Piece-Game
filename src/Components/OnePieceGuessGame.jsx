@@ -8,7 +8,7 @@ import { startJourney } from "../ai";
 
 const shuffleArray = (array) => {
   const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 1; i--) {
+  for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
@@ -23,6 +23,7 @@ export const OnePieceGuessGame = () => {
   const [attempts, setAttempts] = useState(0);
   const [journeyResult, setJourneyResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const [crew, setCrew] = useState({
     captain: null,
@@ -81,7 +82,7 @@ export const OnePieceGuessGame = () => {
 
     const userGuess = guess.trim().toLowerCase();
     const isCorrect = currentCharacter.alias.some(
-      (name) => name.toLowerCase() === userGuess
+      (name) => name.toLowerCase() === userGuess,
     );
 
     if (isCorrect) {
@@ -157,19 +158,31 @@ export const OnePieceGuessGame = () => {
 
   const handleBeginJourney = async () => {
     setIsLoading(true);
+    setIsError(false);
     setJourneyResult("The GrandLine is judging your crew...⏳");
 
     try {
       const result = await startJourney(crew);
       setJourneyResult(result);
     } catch (error) {
+      setIsError(true);
       setJourneyResult(
-        "The GrandLine connection failed...even the log Pose gave up"
+        "The GrandLine connection failed...even the log Pose gave up",
       );
     } finally {
       setIsLoading(false);
     }
   };
+
+  const { bodyText, verdictText } = React.useMemo(() => {
+    if (!journeyResult) return { bodyText: "", verdictText: "" };
+    const lines = journeyResult.trim().split("\n").filter(Boolean);
+    if (lines.length < 2) return { bodyText: journeyResult, verdictText: "" };
+    return {
+      bodyText: lines.slice(0, -1).join("\n"),
+      verdictText: lines[lines.length - 1],
+    };
+  }, [journeyResult]);
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-6 bg-linear-to-b from-gray-950 to-gray-900 text-white">
@@ -261,14 +274,41 @@ export const OnePieceGuessGame = () => {
       )}
 
       {journeyResult && (
-        <div className="mt-6 p-6 rounded-2xl bg-white shadow-md border">
-          <h2 className="text-lg text-gray-800 text-center font-bold mb-2">
-            Journey Result
-          </h2>
-          <p className="whitespace-pre-line text-gray-800 text-center">
-            {journeyResult}
-          </p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 16, rotate: -1 }}
+          animate={{ opacity: 1, y: 0, rotate: -1 }}
+          transition={{ duration: 0.5 }}
+          className="mt-8 w-full max-w-xl relative"
+        >
+          <div
+            className={`relative rounded-sm p-8 shadow-2xl border-2 ${
+              isError
+                ? "bg-gray-200 border-gray-400 text-gray-700"
+                : "bg-[#f4e8c9] border-[#3e2723]/30 text-[#3e2723]"
+            }`}
+            style={{ fontFamily: "'Special Elite', monospace" }}
+          >
+            {/* tape corners */}
+            <span className="absolute -top-3 -left-4 w-12 h-6 bg-yellow-100/80 -rotate-6 shadow-sm" />
+            <span className="absolute -top-3 -right-4 w-12 h-6 bg-yellow-100/80 rotate-6 shadow-sm" />
+
+            <p className="text-center text-[11px] tracking-[0.35em] uppercase opacity-60 mb-4">
+              {isError ? "Transmission Lost" : "Log Pose Reading"}
+            </p>
+
+            <p className="whitespace-pre-line leading-relaxed text-[15px]">
+              {bodyText}
+            </p>
+
+            {verdictText && !isError && (
+              <div className="mt-6 flex justify-center">
+                <span className="inline-block border-4 border-red-700/80 text-red-700 font-bold uppercase tracking-wide px-4 py-2 -rotate-6 text-sm">
+                  {verdictText}
+                </span>
+              </div>
+            )}
+          </div>
+        </motion.div>
       )}
 
       <CrewBoard crew={crew} />

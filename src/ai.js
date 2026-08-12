@@ -10,8 +10,8 @@ export async function startJourney(crew) {
   };
 
   const crewText = Object.entries(crew)
-    .filter(([_, name]) => name)
-    .map(([role, name]) => `${roles[role] || role}: ${name}`)
+    .filter(([_, char]) => char)
+    .map(([role, char]) => `${roles[role] || role}: ${char.name}`)
     .join("\n");
 
   const response = await fetch("/api/journey", {
