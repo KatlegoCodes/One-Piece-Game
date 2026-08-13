@@ -1,8 +1,29 @@
-console.log("Key present:", !!process.env.ANTHROPIC_API_KEY);
+import {Ratelimit} from "@upstash/ratelimit";
+import {Redis} from "@upstash/redis";
+
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(5, "60"),
+  analytics: true,
+})
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  const ip = 
+    req.headers["x-fowarded-for"]?.split(",")[0]?.trim() ||
+    req.socket?.remoteAddress ||
+    "unknown";
+
+  const {success, limit, remaining, reset} = await ratelimit.limit(ip);
+
+  if (!success) {
+    res.setHeader("Retry-After", Math.ceil((reset - Date.now()) / 1000));
+    return res.status(429).json({
+      error: "Too many requests - the Log Pose needs a moment to recalibrate. Try again shortly"
+    });
   }
 
   const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
