@@ -23,6 +23,7 @@ export const OnePieceGuessGame = () => {
   const [attempts, setAttempts] = useState(0);
   const [journeyResult, setJourneyResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [hintUsed, setHintUsed] = useState(false);
   const [isError, setIsError] = useState(false);
 
   const [crew, setCrew] = useState({
@@ -75,6 +76,7 @@ export const OnePieceGuessGame = () => {
     setRevealed(false);
     setAttempts(0);
     setMessage("");
+    setHintUsed(false);
   };
 
   const handleGuess = (guess) => {
@@ -106,6 +108,19 @@ export const OnePieceGuessGame = () => {
 
       return newAttempts;
     });
+  };
+
+  const handleHint = () => {
+    if (!currentCharacter || revealed || hintUsed || isCrewFull) return;
+
+    const hintsAvailable = (currentCharacter.hints || []).filter(
+      Boolean,
+    ).length;
+    if (attempts >= hintsAvailable) return;
+
+    setAttempts((prev) => prev + 1);
+    setHintUsed(true);
+    setMessage("Hint Revealed");
   };
 
   const assignToCrew = (role) => {
@@ -154,6 +169,7 @@ export const OnePieceGuessGame = () => {
     setScore(0);
     setRolesFilled(false);
     setJourneyResult(false);
+    setHintUsed(false);
   };
 
   const handleBeginJourney = async () => {
@@ -219,6 +235,18 @@ export const OnePieceGuessGame = () => {
           />
 
           <GuessInput onGuess={handleGuess} disabled={isCrewFull} />
+
+          <button
+            onClick={handleHint}
+            disabled={hintUsed || revealed || isCrewFull}
+            className={`mt-3 px-4 py-2 rounded-lg text-sm font-semibold transition ${
+              hintUsed || revealed
+                ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+          >
+            Hint
+          </button>
 
           {message && (
             <motion.p
