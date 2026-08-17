@@ -336,6 +336,19 @@ export const OnePieceGuessGame = () => {
               </div>
             )}
           </div>
+
+          {/* re-roll button */}
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={handleBeginJourney}
+              disabled={isLoading}
+              className="px-4 py-2 rounded-lg bg-yellow-400 text-black font-semibold text-sm hover:bg-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading
+                ? "Consulting the Log Pose..."
+                : "Try a different fate"}
+            </button>
+          </div>
         </motion.div>
       )}
 
