@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export const CharacterCard = ({
@@ -6,7 +6,19 @@ export const CharacterCard = ({
   revealed,
   attempts = 0,
   disabled = false,
+  onImageReady,
 }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    setImageLoaded(false);
+  }, [character.image]);
+
+  const handleImageDone = () => {
+    setImageLoaded(true);
+    onImageReady?.();
+  };
+
   const hintsToshow = (character.hints || [])
     .filter(Boolean)
     .slice(0, attempts);
@@ -29,8 +41,16 @@ export const CharacterCard = ({
           <img
             src={character.image}
             alt={character.name}
+            onLoad={handleImageDone}
+            onError={handleImageDone}
             className="object-cover w-full h-full"
           />
+
+          {!imageLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-800/80">
+              <div className="w-8 h-8 border-2 border-gray-500 border-t-yellow-400 rounded-full animate-spin" />
+            </div>
+          )}
         </motion.div>
 
         {/* Title */}

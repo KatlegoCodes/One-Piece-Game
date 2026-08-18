@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { CharacterCard } from "./CharacterCard";
 import { GuessInput } from "./GuessInput";
@@ -25,6 +25,7 @@ export const OnePieceGuessGame = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hintUsed, setHintUsed] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const [crew, setCrew] = useState({
     captain: null,
@@ -136,6 +137,7 @@ export const OnePieceGuessGame = () => {
       return newCrew;
     });
     setMessage(`${currentCharacter.name} joined as your ${role}!`);
+    setIsTransitioning(true);
 
     setTimeout(() => {
       const willBeFilled = Object.values({
@@ -145,6 +147,8 @@ export const OnePieceGuessGame = () => {
 
       if (!willBeFilled) {
         drawNextCharacter();
+      } else {
+        setIsTransitioning(false);
       }
     }, 2000);
   };
@@ -190,13 +194,24 @@ export const OnePieceGuessGame = () => {
     }
   };
 
-  const { bodyText, verdictText } = React.useMemo(() => {
-    if (!journeyResult) return { bodyText: "", verdictText: "" };
-    const lines = journeyResult.trim().split("\n").filter(Boolean);
-    if (lines.length < 2) return { bodyText: journeyResult, verdictText: "" };
+  const { bodyText, bountyText, verdictText } = useMemo(() => {
+    if (!journeyResult)
+      return { bodyText: "", bountyText: "", verdictText: "" };
+
+    const bountyMarker = journeyResult.indexOf("BOUNTY:");
+    const verdictMarker = journeyResult.indexOf("VERDICT:");
+
+    if (bountyMarker === -1 || verdictMarker === -1) {
+      return { bodyText: journeyResult, bountyText: "", verdictText: "" };
+    }
     return {
-      bodyText: lines.slice(0, -1).join("\n"),
-      verdictText: lines[lines.length - 1],
+      bodyText: journeyResult.slice(0, bountyMarker).trim(),
+      bountyText: journeyResult
+        .slice(bountyMarker + "BOUNTY:".length, verdictMarker)
+        .trim(),
+      verdictText: journeyResult
+        .slice(verdictMarker + "VERDICT:".length)
+        .trim(),
     };
   }, [journeyResult]);
 
@@ -232,9 +247,13 @@ export const OnePieceGuessGame = () => {
             character={currentCharacter}
             revealed={revealed}
             attempts={attempts}
+            onImageReady={() => setIsTransitioning(false)}
           />
 
-          <GuessInput onGuess={handleGuess} disabled={isCrewFull} />
+          <GuessInput
+            onGuess={handleGuess}
+            disabled={isCrewFull || isTransitioning}
+          />
 
           <button
             onClick={handleHint}
@@ -327,6 +346,15 @@ export const OnePieceGuessGame = () => {
             <p className="whitespace-pre-line leading-relaxed text-[15px]">
               {bodyText}
             </p>
+
+            {bountyText && !isError && (
+              <div className="mt-5 text-center">
+                <p className="text-[10px] tracking-[0.3em] uppercase opacity-50 mb-1">
+                  Bounty
+                </p>
+                <p className="text-2xl font-bold">{bountyText}</p>
+              </div>
+            )}
 
             {verdictText && !isError && (
               <div className="mt-6 flex justify-center">
