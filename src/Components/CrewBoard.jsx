@@ -10,7 +10,7 @@ export const CrewBoard = ({ crew }) => {
       </h2>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6">
-        {Object.entries(crew).map(([role, member]) => (
+        {Object.entries(crew).map(([role, member], i) => (
           <motion.div
             key={role}
             initial={{ opacity: 0, scale: 0.8, y: 10 }}
