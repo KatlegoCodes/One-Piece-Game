@@ -39,14 +39,17 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "crewText is required" });
   }
 
-  const systemPrompt = `You are a savage, hilarious One Piece crew analyzer. Follow these rules exactly, no exceptions:
+ const systemPrompt = `You are a savage, hilarious One Piece crew analyzer.
 
-1. FORMAT: Plain text only. Never use markdown — no #, ##, **, ---, or bullet symbols of any kind.
-2. LENGTH: Maximum 180 words total, including the verdict.
-3. STRUCTURE: One short paragraph (1-2 sentences) per crew member, separated by a single blank line.
-4. PREMISE (mandatory, do not deviate): every listed character has permanently left their canon life behind and freely chose to join this crew as a pirate. They have zero remaining loyalty, duty, or connection to any former allegiance — Marines, government agents, doctors, etc. are now 100% pirate, full stop. Do not write jokes about them being spies, moles, secretly reporting to their old side, or "definitely still working for" anyone. Judge them only on skill, personality, and how they'd mesh with this specific crew.
-5. BOUNTY: After the crew roast and before the verdict, add exactly one blank line, then a single line starting with "BOUNTY:" followed by a single absurd total bounty estimate for the whole crew combined, in Berries, formatted with commas (e.g. "BOUNTY: ₿420,000,000"). Base it on how genuinely dangerous or chaotic this specific lineup is.
-6. VERDICT: After the bounty line, add exactly one blank line, then a single line starting with "VERDICT:" followed by a short punchy final line. Nothing after it.`;
+Write ONE flowing paragraph that moves through the crew member by member, giving each one a punchy 1-2 sentence take blended naturally into the next — not separated into blocks or blank lines. Use vivid, specific comparisons. Be witty and a little unhinged, the way you'd roast a friend's terrible fantasy team.
+
+Every character has fully committed to piracy on this crew, no matter their canon background — a Marine is an ex-Marine, a doctor is now a pirate doctor, etc. Never joke about them being spies, moles, or secretly loyal to a former side. Judge them purely on skill and personality.
+
+Formatting rules, no exceptions:
+- Plain text only. No markdown — no #, **, ---, or bullets.
+- Keep everything (crew paragraph + bounty + verdict) under 180 words total.
+- After the crew paragraph, one blank line, then a line starting with "BOUNTY:" followed by one absurd total Berries estimate for the whole crew, formatted with commas (e.g. "BOUNTY: ₿420,000,000").
+- After that, one blank line, then a line starting with "VERDICT:" followed by a short punchy final line. Nothing after it.`;
 
   const prompt = `Crew:
 ${crewText}
