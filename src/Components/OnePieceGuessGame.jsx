@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { CharacterCard } from "./CharacterCard";
 import { GuessInput } from "./GuessInput";
 import { characters } from "../characters";
@@ -241,64 +241,76 @@ export const OnePieceGuessGame = () => {
         </p>
       </div>
 
-      {currentCharacter && (
-        <>
-          <CharacterCard
-            character={currentCharacter}
-            revealed={revealed}
-            attempts={attempts}
-            onImageReady={() => setIsTransitioning(false)}
-          />
-
-          <GuessInput
-            onGuess={handleGuess}
-            disabled={isCrewFull || isTransitioning}
-          />
-
-          <button
-            onClick={handleHint}
-            disabled={hintUsed || revealed || isCrewFull}
-            className={`mt-3 px-4 py-2 rounded-lg text-sm font-semibold transition ${
-              hintUsed || revealed
-                ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                : "bg-blue-500 text-white hover:bg-blue-600"
-            }`}
+      <AnimatePresence mode="wait">
+        {currentCharacter && (
+          <motion.div
+            key={currentCharacter.name}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.3 }}
           >
-            Hint
-          </button>
+            <CharacterCard
+              character={currentCharacter}
+              revealed={revealed}
+              attempts={attempts}
+              onImageReady={() => setIsTransitioning(false)}
+            />
 
-          {message && (
-            <motion.p
-              key={message}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className={`mt-4 text-center font-md text-lg ${
-                message.includes("Correct") ? "text-gray-400" : "text-red-500"
+            <GuessInput
+              onGuess={handleGuess}
+              disabled={isCrewFull || isTransitioning}
+            />
+
+            <motion.button
+              onClick={handleHint}
+              disabled={hintUsed || revealed || isCrewFull}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className={`mt-3 px-4 py-2 rounded-lg text-sm font-semibold transition ${
+                hintUsed || revealed
+                  ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                  : "bg-blue-500 text-white hover:bg-blue-600"
               }`}
             >
-              {message}
-            </motion.p>
-          )}
+              Hint
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-          {revealed && !rolesFilled && (
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              {Object.keys(crew).map((role) => (
-                <button
-                  key={role}
-                  onClick={() => assignToCrew(role)}
-                  disabled={crew[role]}
-                  className={`px-3 py-2 rounded-lg text-sm font-semibold ${
-                    crew[role]
-                      ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                      : "bg-yellow-400 text-black hover:bg-yellow-500"
-                  }`}
-                >
-                  {role.charAt(0).toUpperCase() + role.slice(1)}
-                </button>
-              ))}
-            </div>
-          )}
-        </>
+      <div className="mt-4 h-7 flex items-center justify-center">
+        {message && (
+          <motion.p
+            key={message}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className={`text-center font-md text-lg ${
+              message.includes("Correct") ? "text-gray-400" : "text-red-500"
+            }`}
+          >
+            {message}
+          </motion.p>
+        )}
+      </div>
+
+      {revealed && !rolesFilled && (
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          {Object.keys(crew).map((role) => (
+            <button
+              key={role}
+              onClick={() => assignToCrew(role)}
+              disabled={crew[role]}
+              className={`px-3 py-2 rounded-lg text-sm font-semibold ${
+                crew[role]
+                  ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                  : "bg-yellow-400 text-black hover:bg-yellow-500"
+              }`}
+            >
+              {role.charAt(0).toUpperCase() + role.slice(1)}
+            </button>
+          ))}
+        </div>
       )}
 
       <div className="w-full max-w-4xl flex justify-center mt-5">
