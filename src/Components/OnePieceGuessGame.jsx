@@ -265,19 +265,30 @@ export const OnePieceGuessGame = () => {
         )}
       </AnimatePresence>
 
-      <motion.button
-        onClick={handleHint}
-        disabled={hintUsed || revealed || isCrewFull}
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        className={`mt-8 px-4 py-2 rounded-lg text-sm font-semibold transition flex justify-center items-center ${
-          hintUsed || revealed
-            ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-            : "bg-blue-500 text-white hover:bg-blue-600"
-        }`}
-      >
-        Hint
-      </motion.button>
+      <div className="mt-3 flex gap-3">
+        <motion.button
+          onClick={handleHint}
+          disabled={hintUsed || revealed || isCrewFull}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          className={`px-4 py-2 rounded-lg text-sm font-semibold transition flex justify-center items-center ${
+            hintUsed || revealed
+              ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+              : "bg-blue-500 text-white hover:bg-blue-600"
+          }`}
+        >
+          Hint
+        </motion.button>
+
+        <motion.button
+          onClick={resetGame}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          className="px-4 py-2 rounded-lg bg-red-500 font-semibold text-sm hover:bg-red-600"
+        >
+          Reset Game
+        </motion.button>
+      </div>
 
       <div className="mt-4 h-7 flex items-center justify-center">
         {message && (
@@ -312,15 +323,6 @@ export const OnePieceGuessGame = () => {
           ))}
         </div>
       )}
-
-      <div className="w-full max-w-4xl flex justify-center mt-1">
-        <button
-          onClick={resetGame}
-          className="px-4 py-2 rounded-lg bg-red-500 font-semibold hover:bg-red-600"
-        >
-          Reset Game
-        </button>
-      </div>
 
       {isCrewFull && (
         <button
